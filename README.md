@@ -1,73 +1,96 @@
-# React + TypeScript + Vite
+# @han/heroui-kit
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Opinionated HeroUI components with built-in React Hook Form integration.
 
-Currently, two official plugins are available:
+## Introduction
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+This library provides a collection of customized components built on top of [HeroUI](https://heroui.com). It focuses on providing consistent styling (e.g., `bordered` variant, `sm` radius) and seamless integration with `react-hook-form` via dedicated control wrappers.
 
-## React Compiler
+## Installation
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install @han/heroui-kit
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Peer Dependencies
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Ensure you have the following peer dependencies installed in your project:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- `react` >= 19
+- `react-dom` >= 19
+- `@heroui/react` >= 2.8
+- `framer-motion` >= 11
+- `react-hook-form` >= 7
+
+## Components
+
+### InputText
+
+A styled wrapper around HeroUI's `Input` component.
+
+**Default Props:**
+
+- `variant`: "bordered"
+- `radius`: "sm"
+- `labelPlacement`: "outside"
+- Background: White (Light Mode) / Default (Dark Mode)
+
+**Usage:**
+
+```tsx
+import { InputText } from "@han/heroui-kit";
+
+function App() {
+  return <InputText label="Username" placeholder="Enter your username" />;
+}
 ```
+
+### InputTextWithRHFControl
+
+A wrapper component that integrates `InputText` with `react-hook-form`'s `Controller`. It automatically handles:
+
+- State management via `control`
+- Error states (`isInvalid`)
+- Error messages (`errorMessage`)
+- Required validation (if `isRequired` prop is true)
+
+**Usage:**
+
+```tsx
+import { useForm } from "react-hook-form";
+import { InputTextWithRHFControl } from "@han/heroui-kit";
+
+interface FormValues {
+  username: string;
+}
+
+function App() {
+  const { control, handleSubmit } = useForm<FormValues>();
+
+  const onSubmit = (data: FormValues) => {
+    console.log(data);
+  };
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <InputTextWithRHFControl control={control} name="username" label="Username" isRequired />
+      <button type="submit">Submit</button>
+    </form>
+  );
+}
+```
+
+## Development
+
+This project uses Vite for development and bundling.
+
+### Scripts
+
+- **`npm run dev`**: Start the development server.
+- **`npm run build`**: Build the library for production (outputs to `dist`).
+- **`npm run lint`**: Run ESLint.
+- **`npm run preview`**: Preview the production build.
+
+## License
+
+MIT

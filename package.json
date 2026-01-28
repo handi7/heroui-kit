@@ -1,18 +1,24 @@
 {
-  "name": "my-heroui-kit",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
+  "name": "@han/heroui-kit",
+  "version": "0.1.0",
+  "description": "Opinionated HeroUI components",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "vite build && tsc -p tsconfig.build.json",
     "lint": "eslint .",
     "preview": "vite preview"
   },
-  "dependencies": {
+  "peerDependencies": {
     "@heroui/react": "^2.8.7",
     "@hookform/resolvers": "^5.2.2",
-    "framer-motion": "^12.27.5",
+    "framer-motion": "^11.18.2",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-hook-form": "^7.71.1"
